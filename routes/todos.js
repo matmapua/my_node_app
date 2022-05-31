@@ -24,7 +24,27 @@ connection.end();
 router.post('/', function(req, res, next) {
 	const title = req.body.title;
 	const content = req.body.content;
+	const mysql = require('mysql');
+	const connection = mysql.createConnection({
+		host: 'localhost',
+		user: 'my_node_app',
+		password: 'my_node_app',
+		database: 'my_node_app'
+	});
+
+	connection.connect();
+
+	const query = 'INSERT INTO `todos` (`title`, `content`, `created_at`, `updated_at`)' +
+		'VALUES (?, ?, SYSDATE(), SYSDATE())';
+	connection.query(query, 
+		[title, content],
+		(err, rows, fields) => {
+			if (err) throw err;
+
 	res.send(`respond with a new resource ${title} ${content}`);
+});
+
+	connection.end();
 });
 
 /* GET show todo. */
