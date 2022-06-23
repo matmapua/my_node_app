@@ -15,7 +15,12 @@ connection.end();
 });
 /* GET new todo. */
 router.get('/new', function(req, res, next) {
-  res.render('todos/new');
+let message;
+if (req.session.message) {
+  message = req.session.message;
+  req.session.message = null;
+}
+res.sender('todos/new', { message: message });
 });
 
 /* POST create todo. */
