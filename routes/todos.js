@@ -1,15 +1,8 @@
 var express = require('express');
 var router = express.Router();
-
+const getDbConnection = require('../lib/db_connection');
 /* GET todos listing. */
 router.get('/', function(req, res, next) {
-  const mysql = require('mysql');
-	const connection = mysql.createConnection({
-		host: 'localhost',
-		user: 'my_node_app',
-		password: 'my_node_app',
-		database: 'my_node_app'
-});
 connection.connect();
 
 connection.query('SELECT 1 + 1 AS solution', (err, rows, fields) => {
@@ -24,14 +17,7 @@ connection.end();
 router.post('/', function(req, res, next) {
 	const title = req.body.title;
 	const content = req.body.content;
-	const mysql = require('mysql');
-	const connection = mysql.createConnection({
-		host: 'localhost',
-		user: 'my_node_app',
-		password: 'my_node_app',
-		database: 'my_node_app'
-	});
-
+const connection = getDbConnection();
 	connection.connect();
 
 	const query = 'INSERT INTO `todos` (`title`, `content`, `created_at`, `updated_at`)' +
